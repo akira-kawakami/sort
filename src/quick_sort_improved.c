@@ -23,16 +23,15 @@ void quick_sort(int A[], int n){
   pivot = A[n-1];
   A[n-1] = A[0];
   A[0] = pivot;
-  for (i = j = 1; i < n; i++){
-    if(A[i] <= pivot){
+  for(i = j = m = 1; i < n; i++){
+    if(A[i] < pivot){
       swap(A+i, A+j);
       j++;
-    }
-  }
-  for(i = m = 1 ; i < j; i++){
-    if(A[i] < pivot){
-      swap(A+i, A+m);
       m++;
+    }
+    if(A[i] == pivot){
+      swap(A+i, A+m);
+      j++;
     }
   }
     swap(A,A+m-1);
