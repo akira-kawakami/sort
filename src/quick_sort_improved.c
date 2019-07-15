@@ -26,11 +26,11 @@ void quick_sort(int A[], int n){
   for(i = j = m = 1; i < n; i++){
     if(A[i] < pivot){
       swap(A+i, A+j);
+      swap(A+j, A+m);
       j++;
       m++;
-    }
-    if(A[i] == pivot){
-      swap(A+i, A+m);
+    }else if(A[i] == pivot){
+      swap(A+i, A+j);
       j++;
     }
   }
@@ -52,5 +52,6 @@ int main(){
   quick_sort(A, N);
   for(i=0;i<N;i++){
     if(A[i] != i) printf("ERROR %dth element is %d\n", i, A[i]);
+    //printf("%d th element is %d\n", i, A[i]);
   }
 }

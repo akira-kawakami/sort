@@ -21,11 +21,11 @@ int quick_select(int A[], int n, int k){
   for(i = j = m = 1; i < n; i++){
     if(A[i] < pivot){
       swap(A+i, A+j);
+      swap(A+j, A+m);
       j++;
       m++;
-    }
-    if(A[i] == pivot){
-      swap(A+i, A+m);
+    }else if(A[i] == pivot){
+      swap(A+i, A+j);
       j++;
     }
   }
@@ -36,7 +36,7 @@ int quick_select(int A[], int n, int k){
 
 int median_of_median(int A[], int n, int k){
   int i, j, m, x, pivot;
-  int B[n/5];
+  int B[n/5+1];
   if(n<=5){
     return quick_select(A, n, k);
   }
@@ -44,19 +44,23 @@ int median_of_median(int A[], int n, int k){
     for(i = 0; i < n/5; i++){
         B[i] = quick_select(A+5*i, 5, 2);
       }
+    if(n%5 != 0){
+        B[n/5] = quick_select(A+5*(n/5), n%5, n%5/2);
+        pivot = quick_select(B, n/5+1, n/10+1);
+    }
+    else pivot = quick_select(B, n/5, n/10);
+
     x = A[0];
-    pivot = quick_select(B, n/5, n/10);
     A[0] = pivot;
-    for(i = j = 1; i < n; i++){
-      if(A[i] <= pivot){
+    for(i = j = m = 1; i < n; i++){
+      if(A[i] < pivot){
+        swap(A+i, A+j);
+        swap(A+j, A+m);
+        j++;
+        m++;
+      }else if(A[i] == pivot){
         swap(A+i, A+j);
         j++;
-      }
-    }
-    for(i = m = 1 ; i < j; i++){
-      if(A[i] < pivot){
-        swap(A+i, A+m);
-        m++;
       }
     }
     if(x > pivot){
@@ -82,6 +86,7 @@ int main(){
   }
   for(i=0;i<N;i++){
     if(median_of_median(A, N, i) != i) printf("ERROR %d %d\n", i, median_of_median(A, N, i));
-//    printf("%d th element is %d\n", i, quick_select(A, N, i));
+    //printf("%d th element is %d\n", i, median_of_median(A, N, i));
   }
+  return 0;
 }
